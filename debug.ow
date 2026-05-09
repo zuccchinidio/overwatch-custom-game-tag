@@ -33,13 +33,66 @@ rule("TEAM — СИНЯЯ ТОЛЬКО МАУГА")
 	}
 }
 
+rule("TEAM — КРАСНАЯ БЕЗ МАУГИ ИНИТ")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	actions
+	{
+		Global.H = Empty Array;
+		Modify Global Variable(H, Append To Array, Hero(Д.Ва));
+		Modify Global Variable(H, Append To Array, Hero(Думфист));
+		Modify Global Variable(H, Append To Array, Hero(Королева Юнкеров));
+		Modify Global Variable(H, Append To Array, Hero(Ориса));
+		Modify Global Variable(H, Append To Array, Hero(Раматтра));
+		Modify Global Variable(H, Append To Array, Hero(Райнхардт));
+		Modify Global Variable(H, Append To Array, Hero(Турбосвин));
+		Modify Global Variable(H, Append To Array, Hero(Сигма));
+		Modify Global Variable(H, Append To Array, Hero(Уинстон));
+		Modify Global Variable(H, Append To Array, Hero(Таран));
+		Modify Global Variable(H, Append To Array, Hero(Заря));
+		Modify Global Variable(H, Append To Array, Hero(Эш));
+		Modify Global Variable(H, Append To Array, Hero(Бастион));
+		Modify Global Variable(H, Append To Array, Hero(Кэссиди));
+		Modify Global Variable(H, Append To Array, Hero(Эхо));
+		Modify Global Variable(H, Append To Array, Hero(Гэндзи));
+		Modify Global Variable(H, Append To Array, Hero(Хандзо));
+		Modify Global Variable(H, Append To Array, Hero(Крысавчик));
+		Modify Global Variable(H, Append To Array, Hero(Мэй));
+		Modify Global Variable(H, Append To Array, Hero(Фарра));
+		Modify Global Variable(H, Append To Array, Hero(Жнец));
+		Modify Global Variable(H, Append To Array, Hero(Соджорн));
+		Modify Global Variable(H, Append To Array, Hero(Солдат: 76));
+		Modify Global Variable(H, Append To Array, Hero(Сомбра));
+		Modify Global Variable(H, Append To Array, Hero(Симметра));
+		Modify Global Variable(H, Append To Array, Hero(Торбьорн));
+		Modify Global Variable(H, Append To Array, Hero(Трейсер));
+		Modify Global Variable(H, Append To Array, Hero(Роковая Вдова));
+		Modify Global Variable(H, Append To Array, Hero(Вентура));
+		Modify Global Variable(H, Append To Array, Hero(Ана));
+		Modify Global Variable(H, Append To Array, Hero(Батист));
+		Modify Global Variable(H, Append To Array, Hero(Бригитта));
+		Modify Global Variable(H, Append To Array, Hero(Иллари));
+		Modify Global Variable(H, Append To Array, Hero(Джуно));
+		Modify Global Variable(H, Append To Array, Hero(Кирико));
+		Modify Global Variable(H, Append To Array, Hero(Ткач Жизни));
+		Modify Global Variable(H, Append To Array, Hero(Лусио));
+		Modify Global Variable(H, Append To Array, Hero(Ангел));
+		Modify Global Variable(H, Append To Array, Hero(Мойра));
+		Modify Global Variable(H, Append To Array, Hero(Дзенъятта));
+	}
+}
+
 rule("TEAM — КРАСНАЯ БЕЗ МАУГИ")
 {
 	event
 	{
 		Ongoing - Each Player;
 		Team 2;
-		Мауга;
+		Все;
 	}
 
 	conditions
@@ -49,9 +102,7 @@ rule("TEAM — КРАСНАЯ БЕЗ МАУГИ")
 
 	actions
 	{
-		Start Forcing Player To Be Hero(Event Player, Hero(Трейсер));
-		Wait(0.250, Ignore Condition);
-		Stop Forcing Player To Be Hero(Event Player);
+		Set Player Allowed Heroes(Event Player, Global.H);
 	}
 }
 
