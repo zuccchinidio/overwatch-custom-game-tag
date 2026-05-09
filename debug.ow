@@ -256,6 +256,8 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ — КУПОЛ")
 	actions
 	{
 		Event Player.N = 2;
+		Disallow Button(Event Player, Button(Ability 1));
+		Disallow Button(Event Player, Button(Ability 2));
 		Create Effect(All Players(All Teams), Sphere, Custom Color(255, 255, 255, 13), Event Player, 8, Visible To Position and Radius);
 		Event Player.L = Filtered Array(All Players(Opposite Team Of(Team Of(Event Player))), Distance Between(Position Of(Event Player), Position Of(Current Array Element)) <= 8);
 		Event Player.E = Last Created Entity;
@@ -313,6 +315,8 @@ rule("MAUGA — КУПОЛ ЗАВЕРШЕН")
 		Destroy Effect(Event Player.E);
 		Stop Chasing Player Variable(Event Player, T);
 		Event Player.L = Empty Array;
+		Allow Button(Event Player, Button(Ability 1));
+		Allow Button(Event Player, Button(Ability 2));
 		Event Player.N = 0;
 		Event Player.X = 0;
 		Set Ultimate Charge(Event Player, 0);
@@ -336,6 +340,8 @@ rule("MAUGA — СБРОС ПРИ СМЕРТИ")
 			Stop Chasing Player Variable(Event Player, T);
 			Event Player.L = Empty Array;
 		End;
+		Allow Button(Event Player, Button(Ability 1));
+		Allow Button(Event Player, Button(Ability 2));
 		Event Player.N = 0;
 		Event Player.X = 0;
 		Set Ultimate Charge(Event Player, 0);
