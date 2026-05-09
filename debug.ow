@@ -71,7 +71,7 @@ rule("TEAM — КРАСНАЯ БЕЗ МАУГИ ИНИТ")
 		Modify Global Variable(H, Append To Array, Hero(Симметра));
 		Modify Global Variable(H, Append To Array, Hero(Торбьорн));
 		Modify Global Variable(H, Append To Array, Hero(Трейсер));
-		Modify Global Variable(H, Append To Array, Hero(Роковая вдова));
+		Modify Global Variable(H, Append To Array, Hero(Роковая Вдова));
 		Modify Global Variable(H, Append To Array, Hero(Авентюра));
 		Modify Global Variable(H, Append To Array, Hero(Ана));
 		Modify Global Variable(H, Append To Array, Hero(Батист));
