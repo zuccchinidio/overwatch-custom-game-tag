@@ -1,0 +1,133 @@
+// ============================================
+// MAUGA — Кастомные правила
+// ============================================
+
+rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Alive(Event Player) == True;
+		Is Using Ability 1(Event Player) == False;
+	}
+
+	actions
+	{
+		Set Move Speed(Event Player, 90);
+	}
+}
+
+rule("MAUGA — СКОРОСТЬ ШИФТ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ability 1(Event Player) == True;
+	}
+
+	actions
+	{
+		Set Move Speed(Event Player, 120);
+	}
+}
+
+rule("MAUGA — СТАРТ ЗАРЯДКИ УЛЬТЫ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 0;
+		Is Alive(Event Player) == True;
+	}
+
+	actions
+	{
+		Event Player.X = 0;
+		Chase Player Variable Over Time(Event Player, X, 100, 30, Destination and Duration);
+	}
+}
+
+rule("MAUGA — СИНК ЗАРЯДА УЛЬТЫ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 0;
+	}
+
+	actions
+	{
+		Set Ultimate Charge(Event Player, Event Player.X);
+		Wait(0.050, Abort When False);
+		Loop If Condition Is True;
+	}
+}
+
+rule("MAUGA — УЛЬТ БРОСОК")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ultimate(Event Player) == True;
+		Event Player.N == 0;
+	}
+
+	actions
+	{
+		Event Player.N = 1;
+		Stop Chasing Player Variable(Event Player, X);
+		Apply Impulse(Event Player, Facing Direction Of(Event Player), 25, To World, Cancel Contrary Motion);
+	}
+}
+
+rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ultimate(Event Player) == False;
+		Event Player.N == 1;
+	}
+
+	actions
+	{
+		Event Player.N = 0;
+		Event Player.X = 0;
+	}
+}
