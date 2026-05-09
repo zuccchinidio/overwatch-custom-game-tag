@@ -236,7 +236,7 @@ rule("MAUGA — УЛЬТ БРОСОК")
 	}
 }
 
-rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
+rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ — КУПОЛ")
 {
 	event
 	{
@@ -254,15 +254,14 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 	actions
 	{
 		Event Player.N = 2;
-		Allow Button(Event Player, Button(Ultimate));
-		Set Ultimate Charge(Event Player, 100);
-		Press Button(Event Player, Button(Ultimate));
-		Wait(0.064, Ignore Condition);
-		Disallow Button(Event Player, Button(Ultimate));
+		Create Effect(All Players(All Teams), Sphere, Color(Yellow), Event Player, 8, Visible To Position and Radius);
+		Event Player.E = Last Created Entity;
+		Event Player.T = 8;
+		Chase Player Variable Over Time(Event Player, T, 0, 8, Destination and Duration);
 	}
 }
 
-rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
+rule("MAUGA — КУПОЛ ЗАВЕРШЕН")
 {
 	event
 	{
@@ -273,15 +272,41 @@ rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
 
 	conditions
 	{
-		Is Using Ultimate(Event Player) == False;
+		Event Player.N == 2;
+		Event Player.T <= 0;
+	}
+
+	actions
+	{
+		Destroy Effect(Event Player.E);
+		Stop Chasing Player Variable(Event Player, T);
+		Event Player.N = 0;
+		Event Player.X = 0;
+		Set Ultimate Charge(Event Player, 0);
+		Chase Player Variable Over Time(Event Player, X, 100, 5, Destination and Duration);
+	}
+}
+
+rule("MAUGA — КУПОЛ ОТМЕНА ПРИ СМЕРТИ")
+{
+	event
+	{
+		Player Died;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
 		Event Player.N == 2;
 	}
 
 	actions
 	{
+		Destroy Effect(Event Player.E);
+		Stop Chasing Player Variable(Event Player, T);
 		Event Player.N = 0;
 		Event Player.X = 0;
 		Set Ultimate Charge(Event Player, 0);
-		Chase Player Variable Over Time(Event Player, X, 100, 5, Destination and Duration);
 	}
 }
