@@ -299,7 +299,7 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ — КУПОЛ")
 		Event Player.N = 2;
 		Disallow Button(Event Player, Button(Ability 1));
 		Disallow Button(Event Player, Button(Ability 2));
-		Create Effect(All Players(All Teams), Sphere, Custom Color(255, 255, 255, 13), Event Player, 8, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Sphere, Custom Color(255, 255, 255, 3), Event Player, 8, Visible To Position and Radius);
 		Event Player.L = Filtered Array(All Players(Opposite Team Of(Team Of(Event Player))), Distance Between(Position Of(Event Player), Position Of(Current Array Element)) <= 8);
 		Event Player.E = Last Created Entity;
 		Create HUD Text(Event Player, Null, Custom String("\u274c SHIFT заблокирован"), Null, Left, 1, Null, Color(Красный), Null, Visible To and String, Default Visibility);
