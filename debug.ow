@@ -103,48 +103,6 @@ rule("DEBUG — КД АБИЛОК МАКС 5 СЕК")
 	}
 }
 
-rule("КАМЕРА — ПЕРЕКЛЮЧЕНИЕ НА Y")
-{
-	event
-	{
-		Ongoing - Each Player;
-		All;
-		Все;
-	}
-
-	conditions
-	{
-		Is Button Held(Event Player, Button(Interact)) == True;
-	}
-
-	actions
-	{
-		If(Event Player.C == 0);
-			Event Player.C = 1;
-			Start Camera(Event Player, Update Every Frame(Ray Cast Hit Position(Eye Position(Event Player), Eye Position(Event Player) + Up * 1 + Facing Direction Of(Event Player) * -3, Null, Event Player, False)), Update Every Frame(Eye Position(Event Player) + Facing Direction Of(Event Player) * 100), 0);
-		Else;
-			Event Player.C = 0;
-			Stop Camera(Event Player);
-		End;
-		Wait(0.500, Ignore Condition);
-	}
-}
-
-rule("КАМЕРА — СТОП ПРИ СМЕРТИ")
-{
-	event
-	{
-		Player Died;
-		All;
-		Все;
-	}
-
-	actions
-	{
-		Event Player.C = 0;
-		Stop Camera(Event Player);
-	}
-}
 
 rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
 {
