@@ -226,6 +226,7 @@ rule("MAUGA — УЛЬТ БРОСОК")
 		Event Player.X >= 100;
 		Event Player.N == 0;
 		Is Alive(Event Player) == True;
+		Is Using Ability 1(Event Player) == False;
 	}
 
 	actions
