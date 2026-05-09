@@ -184,7 +184,7 @@ rule("MAUGA — УЛЬТ БРОСОК")
 	}
 }
 
-rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
+rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 {
 	event
 	{
@@ -195,8 +195,9 @@ rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
 
 	conditions
 	{
-		Is Using Ultimate(Event Player) == False;
 		Event Player.N == 1;
+		Is On Ground(Event Player) == True;
+		Is Using Ultimate(Event Player) == False;
 	}
 
 	actions
