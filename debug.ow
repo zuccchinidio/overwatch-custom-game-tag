@@ -76,28 +76,6 @@ rule("- MAP STATS ;")
 	}
 }
 
-rule("DEBUG — БЫСТРЫЕ АБИЛКИ")
-{
-	event
-	{
-		Ongoing - Each Player;
-		All;
-		Все;
-	}
-
-	conditions
-	{
-		Is Alive(Event Player) == True;
-	}
-
-	actions
-	{
-		Set Ability Cooldown(Event Player, Button(Ability 1), 0);
-		Set Ability Cooldown(Event Player, Button(Ability 2), 0);
-		Wait(0.250, Ignore Condition);
-		Loop If Condition Is True;
-	}
-}
 
 rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
 {
