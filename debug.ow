@@ -254,7 +254,7 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ — КУПОЛ")
 	actions
 	{
 		Event Player.N = 2;
-		Create Effect(All Players(All Teams), Sphere, Color(Белый), Event Player, 8, Visible To Position and Radius);
+		Create Effect(All Players(All Teams), Sphere, Custom Color(255, 255, 255, 75), Event Player, 8, Visible To Position and Radius);
 		Event Player.E = Last Created Entity;
 		Event Player.T = 8;
 		Chase Player Variable Over Time(Event Player, T, 0, 8, Destination and Duration);
