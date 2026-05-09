@@ -233,6 +233,8 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 	actions
 	{
 		Event Player.N = 2;
+		Set Facing(Event Player, Direction From Angles(Horizontal Facing Angle Of(Event Player), 0), To World);
+		Wait(0.064, Ignore Condition);
 		Press Button(Event Player, Button(Ultimate));
 	}
 }
@@ -256,5 +258,6 @@ rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
 	{
 		Event Player.N = 0;
 		Event Player.X = 0;
+		Chase Player Variable Over Time(Event Player, X, 100, 5, Destination and Duration);
 	}
 }
