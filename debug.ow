@@ -18,7 +18,7 @@ rule("TEAM — СИНЯЯ ТОЛЬКО МАУГА")
 	event
 	{
 		Ongoing - Each Player;
-		Team 2;
+		Team 1;
 		Все;
 	}
 
@@ -38,7 +38,7 @@ rule("TEAM — КРАСНАЯ БЕЗ МАУГИ")
 	event
 	{
 		Ongoing - Each Player;
-		Team 1;
+		Team 2;
 		Мауга;
 	}
 
