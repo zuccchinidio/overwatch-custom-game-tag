@@ -254,15 +254,11 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 	actions
 	{
 		Event Player.N = 2;
-		Event Player.F = Facing Direction Of(Event Player);
-		Set Facing(Event Player, Direction From Angles(Horizontal Facing Angle Of(Event Player), 80), To World);
-		Wait(0.032, Ignore Condition);
 		Allow Button(Event Player, Button(Ultimate));
 		Set Ultimate Charge(Event Player, 100);
 		Press Button(Event Player, Button(Ultimate));
 		Wait(0.064, Ignore Condition);
 		Disallow Button(Event Player, Button(Ultimate));
-		Set Facing(Event Player, Event Player.F, To World);
 	}
 }
 
