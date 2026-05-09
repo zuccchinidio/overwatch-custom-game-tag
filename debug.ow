@@ -103,6 +103,42 @@ rule("DEBUG — КД АБИЛОК МАКС 5 СЕК")
 	}
 }
 
+rule("КАМЕРА — ТРЕТЬЕ ЛИЦО")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Все;
+	}
+
+	conditions
+	{
+		Has Spawned(Event Player) == True;
+		Is Alive(Event Player) == True;
+	}
+
+	actions
+	{
+		Start Camera(Event Player, Update Every Frame(Ray Cast Hit Position(Eye Position(Event Player), Eye Position(Event Player) + Up * 1 + Facing Direction Of(Event Player) * -3, Null, Event Player, False)), Update Every Frame(Eye Position(Event Player) + Facing Direction Of(Event Player) * 100), 0);
+	}
+}
+
+rule("КАМЕРА — СТОП ПРИ СМЕРТИ")
+{
+	event
+	{
+		Player Died;
+		All;
+		Все;
+	}
+
+	actions
+	{
+		Stop Camera(Event Player);
+	}
+}
+
 rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
 {
 	event
