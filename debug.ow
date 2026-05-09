@@ -43,9 +43,9 @@ rule("TEAM — КРАСНАЯ БЕЗ МАУГИ ИНИТ")
 	actions
 	{
 		Global.H = Empty Array;
-		Modify Global Variable(H, Append To Array, Hero(Д.Ва));
-		Modify Global Variable(H, Append To Array, Hero(Думфист));
-		Modify Global Variable(H, Append To Array, Hero(Королева Юнкеров));
+		Modify Global Variable(H, Append To Array, Hero(D.Va));
+		Modify Global Variable(H, Append To Array, Hero(Кулак Смерти));
+		Modify Global Variable(H, Append To Array, Hero(Королева Стервятников));
 		Modify Global Variable(H, Append To Array, Hero(Ориса));
 		Modify Global Variable(H, Append To Array, Hero(Раматтра));
 		Modify Global Variable(H, Append To Array, Hero(Райнхардт));
@@ -53,6 +53,7 @@ rule("TEAM — КРАСНАЯ БЕЗ МАУГИ ИНИТ")
 		Modify Global Variable(H, Append To Array, Hero(Сигма));
 		Modify Global Variable(H, Append To Array, Hero(Уинстон));
 		Modify Global Variable(H, Append To Array, Hero(Таран));
+		Modify Global Variable(H, Append To Array, Hero(Азарт));
 		Modify Global Variable(H, Append To Array, Hero(Заря));
 		Modify Global Variable(H, Append To Array, Hero(Эш));
 		Modify Global Variable(H, Append To Array, Hero(Бастион));
@@ -65,18 +66,18 @@ rule("TEAM — КРАСНАЯ БЕЗ МАУГИ ИНИТ")
 		Modify Global Variable(H, Append To Array, Hero(Фарра));
 		Modify Global Variable(H, Append To Array, Hero(Жнец));
 		Modify Global Variable(H, Append To Array, Hero(Соджорн));
-		Modify Global Variable(H, Append To Array, Hero(Солдат: 76));
+		Modify Global Variable(H, Append To Array, Hero(Солдат-76));
 		Modify Global Variable(H, Append To Array, Hero(Сомбра));
 		Modify Global Variable(H, Append To Array, Hero(Симметра));
 		Modify Global Variable(H, Append To Array, Hero(Торбьорн));
 		Modify Global Variable(H, Append To Array, Hero(Трейсер));
-		Modify Global Variable(H, Append To Array, Hero(Роковая Вдова));
-		Modify Global Variable(H, Append To Array, Hero(Вентура));
+		Modify Global Variable(H, Append To Array, Hero(Роковая вдова));
+		Modify Global Variable(H, Append To Array, Hero(Авентюра));
 		Modify Global Variable(H, Append To Array, Hero(Ана));
 		Modify Global Variable(H, Append To Array, Hero(Батист));
 		Modify Global Variable(H, Append To Array, Hero(Бригитта));
 		Modify Global Variable(H, Append To Array, Hero(Иллари));
-		Modify Global Variable(H, Append To Array, Hero(Джуно));
+		Modify Global Variable(H, Append To Array, Hero(Юнона));
 		Modify Global Variable(H, Append To Array, Hero(Кирико));
 		Modify Global Variable(H, Append To Array, Hero(Ткач Жизни));
 		Modify Global Variable(H, Append To Array, Hero(Лусио));
