@@ -106,6 +106,10 @@ rule("MAUGA — УЛЬТ БРОСОК")
 	{
 		Event Player.N = 1;
 		Stop Chasing Player Variable(Event Player, X);
+		Set Status(Event Player, Null, Stunned, 0.016);
+		Wait(0.016, Ignore Condition);
+		Clear Status(Event Player, Stunned);
+		Set Ultimate Charge(Event Player, 100);
 		Apply Impulse(Event Player, Facing Direction Of(Event Player), 25, To World, Cancel Contrary Motion);
 	}
 }
@@ -123,11 +127,12 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 	{
 		Event Player.N == 1;
 		Is On Ground(Event Player) == True;
-		Is Using Ultimate(Event Player) == False;
 	}
 
 	actions
 	{
+		Press Button(Event Player, Button(Ultimate));
+		Wait(0.250, Ignore Condition);
 		Event Player.N = 0;
 		Event Player.X = 0;
 	}
