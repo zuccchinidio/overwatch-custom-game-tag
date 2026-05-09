@@ -163,7 +163,7 @@ rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
 
 	actions
 	{
-		Set Move Speed(Event Player, 90);
+		Set Move Speed(Event Player, 110);
 	}
 }
 
