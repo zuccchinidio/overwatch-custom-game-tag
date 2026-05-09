@@ -1,3 +1,24 @@
+settings
+{
+	heroes
+	{
+		Team 1
+		{
+			disabled heroes
+			{
+				Мауга
+			}
+		}
+		Team 2
+		{
+			enabled heroes
+			{
+				Мауга
+			}
+		}
+	}
+}
+
 rule("ROUND — ИНИЦИАЛИЗАЦИЯ")
 {
 	event
@@ -10,46 +31,6 @@ rule("ROUND — ИНИЦИАЛИЗАЦИЯ")
 		Set Match Time(300);
 		Pause Match Time;
 		Disable Built-In Game Mode Completion;
-	}
-}
-
-rule("TEAM — СИНЯЯ ТОЛЬКО МАУГА")
-{
-	event
-	{
-		Ongoing - Each Player;
-		Team 2;
-		Все;
-	}
-
-	conditions
-	{
-		Has Spawned(Event Player) == True;
-	}
-
-	actions
-	{
-		Set Player Allowed Heroes(Event Player, Hero(Мауга));
-	}
-}
-
-rule("TEAM — КРАСНАЯ ВСЕ КРОМЕ МАУГИ")
-{
-	event
-	{
-		Ongoing - Each Player;
-		Team 1;
-		Все;
-	}
-
-	conditions
-	{
-		Has Spawned(Event Player) == True;
-	}
-
-	actions
-	{
-		Set Player Allowed Heroes(Event Player, Filtered Array(All Heroes, Current Array Element != Hero(Мауга)));
 	}
 }
 
