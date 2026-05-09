@@ -1,0 +1,64 @@
+// ============================================
+// GAME MODE — Раунд и таймер
+// ============================================
+// Раунд: 5 минут
+// Команды: 2 красных (Team 2) vs 8 синих (Team 1)
+// После окончания раунда — перезапуск
+// ============================================
+
+rule("ROUND — ИНИЦИАЛИЗАЦИЯ")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	actions
+	{
+		Set Match Time(300);
+		Pause Match Time;
+		Disable Built-In Game Mode Completion;
+		Set Max Team Size(Team 1, 8);
+		Set Max Team Size(Team 2, 2);
+	}
+}
+
+rule("ROUND — СТАРТ ТАЙМЕРА")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+	}
+
+	actions
+	{
+		Set Match Time(300);
+		Unpause Match Time;
+	}
+}
+
+rule("ROUND — ВРЕМЯ ВЫШЛО — ПЕРЕЗАПУСК")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	conditions
+	{
+		Is Game In Progress == True;
+		Match Time <= 0;
+	}
+
+	actions
+	{
+		Big Message(All Players(All Teams), Custom String("РАУНД ОКОНЧЕН!"));
+		Wait(3, Ignore Condition);
+		Restart Match;
+	}
+}
