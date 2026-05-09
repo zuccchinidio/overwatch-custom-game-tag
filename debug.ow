@@ -213,14 +213,16 @@ rule("MAUGA — СИНК ЗАРЯДА УЛЬТЫ")
 
 	conditions
 	{
-		Event Player.N == 0;
+		Has Spawned(Event Player) == True;
 	}
 
 	actions
 	{
-		Set Ultimate Charge(Event Player, Event Player.X);
-		Wait(0.050, Abort When False);
-		Loop If Condition Is True;
+		If(Event Player.N == 0);
+			Set Ultimate Charge(Event Player, Event Player.X);
+		End;
+		Wait(0.050, Ignore Condition);
+		Loop;
 	}
 }
 
@@ -269,9 +271,12 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 	actions
 	{
 		Event Player.N = 2;
-		Set Facing(Event Player, Direction From Angles(Horizontal Facing Angle Of(Event Player), 0), To World);
-		Wait(0.064, Ignore Condition);
+		Event Player.F = Facing Direction Of(Event Player);
+		Set Facing(Event Player, Direction From Angles(Horizontal Facing Angle Of(Event Player), 80), To World);
+		Wait(0.032, Ignore Condition);
 		Press Button(Event Player, Button(Ultimate));
+		Wait(0.032, Ignore Condition);
+		Set Facing(Event Player, Event Player.F, To World);
 	}
 }
 
@@ -294,6 +299,7 @@ rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
 	{
 		Event Player.N = 0;
 		Event Player.X = 0;
+		Set Ultimate Charge(Event Player, 0);
 		Chase Player Variable Over Time(Event Player, X, 100, 5, Destination and Duration);
 	}
 }
