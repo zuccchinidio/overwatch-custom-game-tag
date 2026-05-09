@@ -76,6 +76,32 @@ rule("- MAP STATS ;")
 	}
 }
 
+rule("DEBUG — КД АБИЛОК МАКС 5 СЕК")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Все;
+	}
+
+	conditions
+	{
+		Is Alive(Event Player) == True;
+	}
+
+	actions
+	{
+		If(Ability Cooldown(Event Player, Button(Ability 1)) > 5);
+			Set Ability Cooldown(Event Player, Button(Ability 1), 5);
+		End;
+		If(Ability Cooldown(Event Player, Button(Ability 2)) > 5);
+			Set Ability Cooldown(Event Player, Button(Ability 2), 5);
+		End;
+		Wait(0.250, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
 
 rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
 {
@@ -136,7 +162,7 @@ rule("MAUGA — СТАРТ ЗАРЯДКИ УЛЬТЫ")
 	actions
 	{
 		Event Player.X = 0;
-		Chase Player Variable Over Time(Event Player, X, 100, 3, Destination and Duration);
+		Chase Player Variable Over Time(Event Player, X, 100, 5, Destination and Duration);
 	}
 }
 
@@ -206,8 +232,28 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 
 	actions
 	{
+		Event Player.N = 2;
 		Press Button(Event Player, Button(Ultimate));
-		Wait(0.250, Ignore Condition);
+	}
+}
+
+rule("MAUGA — УЛЬТ ЗАВЕРШЕНА")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ultimate(Event Player) == False;
+		Event Player.N == 2;
+	}
+
+	actions
+	{
 		Event Player.N = 0;
 		Event Player.X = 0;
 	}
