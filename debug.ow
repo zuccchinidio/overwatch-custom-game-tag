@@ -145,6 +145,26 @@ rule("MAUGA — СКОРОСТЬ ШИФТ")
 	}
 }
 
+rule("MAUGA — БЛОК НАТИВНОЙ УЛЬТЫ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	actions
+	{
+		Disallow Button(Event Player, Button(Ultimate));
+	}
+}
+
 rule("MAUGA — СТАРТ ЗАРЯДКИ УЛЬТЫ")
 {
 	event
@@ -202,7 +222,8 @@ rule("MAUGA — УЛЬТ БРОСОК")
 
 	conditions
 	{
-		Is Using Ultimate(Event Player) == True;
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Event Player.X >= 100;
 		Event Player.N == 0;
 	}
 
@@ -210,10 +231,7 @@ rule("MAUGA — УЛЬТ БРОСОК")
 	{
 		Event Player.N = 1;
 		Stop Chasing Player Variable(Event Player, X);
-		Set Status(Event Player, Null, Stunned, 0.016);
-		Wait(0.016, Ignore Condition);
-		Clear Status(Event Player, Stunned);
-		Set Ultimate Charge(Event Player, 100);
+		Set Ultimate Charge(Event Player, 0);
 		Apply Impulse(Event Player, Facing Direction Of(Event Player), 25, To World, Cancel Contrary Motion);
 	}
 }
@@ -239,8 +257,11 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 		Event Player.F = Facing Direction Of(Event Player);
 		Set Facing(Event Player, Direction From Angles(Horizontal Facing Angle Of(Event Player), 80), To World);
 		Wait(0.032, Ignore Condition);
+		Allow Button(Event Player, Button(Ultimate));
+		Set Ultimate Charge(Event Player, 100);
 		Press Button(Event Player, Button(Ultimate));
-		Wait(0.032, Ignore Condition);
+		Wait(0.064, Ignore Condition);
+		Disallow Button(Event Player, Button(Ultimate));
 		Set Facing(Event Player, Event Player.F, To World);
 	}
 }
