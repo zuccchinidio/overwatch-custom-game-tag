@@ -13,6 +13,46 @@ rule("ROUND — ИНИЦИАЛИЗАЦИЯ")
 	}
 }
 
+rule("TEAM — СИНЯЯ ТОЛЬКО МАУГА")
+{
+	event
+	{
+		Ongoing - Each Player;
+		Team 2;
+		Все;
+	}
+
+	conditions
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	actions
+	{
+		Set Player Allowed Heroes(Event Player, Hero(Мауга));
+	}
+}
+
+rule("TEAM — КРАСНАЯ ВСЕ КРОМЕ МАУГИ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		Team 1;
+		Все;
+	}
+
+	conditions
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	actions
+	{
+		Set Player Allowed Heroes(Event Player, Remove From Array(All Heroes, Hero(Мауга)));
+	}
+}
+
 rule("ROUND — СТАРТ ТАЙМЕРА")
 {
 	event
