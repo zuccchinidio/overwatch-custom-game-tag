@@ -225,6 +225,7 @@ rule("MAUGA — УЛЬТ БРОСОК")
 		Is Button Held(Event Player, Button(Ultimate)) == True;
 		Event Player.X >= 100;
 		Event Player.N == 0;
+		Is Alive(Event Player) == True;
 	}
 
 	actions
@@ -319,7 +320,7 @@ rule("MAUGA — КУПОЛ ЗАВЕРШЕН")
 	}
 }
 
-rule("MAUGA — КУПОЛ ОТМЕНА ПРИ СМЕРТИ")
+rule("MAUGA — СБРОС ПРИ СМЕРТИ")
 {
 	event
 	{
@@ -328,16 +329,13 @@ rule("MAUGA — КУПОЛ ОТМЕНА ПРИ СМЕРТИ")
 		Мауга;
 	}
 
-	conditions
-	{
-		Event Player.N == 2;
-	}
-
 	actions
 	{
-		Destroy Effect(Event Player.E);
-		Stop Chasing Player Variable(Event Player, T);
-		Event Player.L = Empty Array;
+		If(Event Player.N == 2);
+			Destroy Effect(Event Player.E);
+			Stop Chasing Player Variable(Event Player, T);
+			Event Player.L = Empty Array;
+		End;
 		Event Player.N = 0;
 		Event Player.X = 0;
 		Set Ultimate Charge(Event Player, 0);
