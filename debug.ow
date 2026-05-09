@@ -352,13 +352,16 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ — КУПОЛ")
 		Event Player.N = 2;
 		Disallow Button(Event Player, Button(Ability 1));
 		Disallow Button(Event Player, Button(Ability 2));
-		Create Effect(All Players(All Teams), Sphere, Custom Color(255, 255, 255, 3), Event Player, 8, Visible To Position and Radius);
+		Event Player.E = Empty Array;
+		Create Effect(All Players(All Teams), Ring, Custom Color(255, 255, 255, 200), Position Of(Event Player) + Vector(0, 0, 0), 8, Visible To Position and Radius);
+		Modify Player Variable(Event Player, E, Append To Array, Last Created Entity);
+		Create Effect(All Players(All Teams), Ring, Custom Color(255, 255, 255, 200), Position Of(Event Player) + Vector(0, 2, 0), 8, Visible To Position and Radius);
+		Modify Player Variable(Event Player, E, Append To Array, Last Created Entity);
+		Create Effect(All Players(All Teams), Ring, Custom Color(255, 255, 255, 200), Position Of(Event Player) + Vector(0, 4, 0), 8, Visible To Position and Radius);
+		Modify Player Variable(Event Player, E, Append To Array, Last Created Entity);
+		Create Effect(All Players(All Teams), Ring, Custom Color(255, 255, 255, 200), Position Of(Event Player) + Vector(0, 6, 0), 8, Visible To Position and Radius);
+		Modify Player Variable(Event Player, E, Append To Array, Last Created Entity);
 		Event Player.L = Filtered Array(All Players(Opposite Team Of(Team Of(Event Player))), Distance Between(Position Of(Event Player), Position Of(Current Array Element)) <= 8);
-		Event Player.E = Last Created Entity;
-		Create HUD Text(Event Player, Null, Custom String("\u274c SHIFT заблокирован"), Null, Left, 1, Null, Custom Color(255, 0, 0, 255), Null, Visible To and String, Default Visibility);
-		Event Player.H = Last Text ID;
-		Create HUD Text(Event Player, Null, Custom String("\u274c E заблокирована"), Null, Left, 2, Null, Custom Color(255, 0, 0, 255), Null, Visible To and String, Default Visibility);
-		Event Player.J = Last Text ID;
 		Event Player.T = 8;
 		Chase Player Variable Over Time(Event Player, T, 0, 8, Destination and Duration);
 	}
@@ -410,9 +413,10 @@ rule("MAUGA — КУПОЛ ЗАВЕРШЕН")
 
 	actions
 	{
-		Destroy Effect(Event Player.E);
-		Destroy HUD Text(Event Player.H);
-		Destroy HUD Text(Event Player.J);
+		Destroy Effect(Event Player.E[0]);
+		Destroy Effect(Event Player.E[1]);
+		Destroy Effect(Event Player.E[2]);
+		Destroy Effect(Event Player.E[3]);
 		Stop Chasing Player Variable(Event Player, T);
 		Event Player.L = Empty Array;
 		Allow Button(Event Player, Button(Ability 1));
@@ -436,9 +440,10 @@ rule("MAUGA — СБРОС ПРИ СМЕРТИ")
 	actions
 	{
 		If(Event Player.N == 2);
-			Destroy Effect(Event Player.E);
-			Destroy HUD Text(Event Player.H);
-			Destroy HUD Text(Event Player.J);
+			Destroy Effect(Event Player.E[0]);
+			Destroy Effect(Event Player.E[1]);
+			Destroy Effect(Event Player.E[2]);
+			Destroy Effect(Event Player.E[3]);
 			Stop Chasing Player Variable(Event Player, T);
 			Event Player.L = Empty Array;
 		End;
