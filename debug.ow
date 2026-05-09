@@ -82,7 +82,7 @@ rule("DEBUG — БЫСТРЫЕ АБИЛКИ")
 	{
 		Ongoing - Each Player;
 		All;
-		All;
+		Все;
 	}
 
 	conditions
