@@ -49,7 +49,7 @@ rule("TEAM — КРАСНАЯ ВСЕ КРОМЕ МАУГИ")
 
 	actions
 	{
-		Set Player Allowed Heroes(Event Player, Remove From Array(All Heroes, Hero(Мауга)));
+		Set Player Allowed Heroes(Event Player, Filtered Array(All Heroes, Current Array Element != Hero(Мауга)));
 	}
 }
 
