@@ -229,10 +229,11 @@ rule("MAUGA — УЛЬТ БРОСОК")
 
 	actions
 	{
-		Event Player.N = 1;
 		Stop Chasing Player Variable(Event Player, X);
 		Set Ultimate Charge(Event Player, 0);
 		Apply Impulse(Event Player, Facing Direction Of(Event Player), 25, To World, Cancel Contrary Motion);
+		Wait(0.200, Ignore Condition);
+		Event Player.N = 1;
 	}
 }
 
