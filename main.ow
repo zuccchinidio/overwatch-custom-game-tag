@@ -13,6 +13,100 @@ rule("ROUND — ИНИЦИАЛИЗАЦИЯ")
 	}
 }
 
+rule("TEAM — СИНЯЯ ТОЛЬКО МАУГА")
+{
+	event
+	{
+		Ongoing - Each Player;
+		Team 1;
+		Все;
+	}
+
+	conditions
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	actions
+	{
+		Set Player Allowed Heroes(Event Player, Hero(Мауга));
+	}
+}
+
+rule("TEAM — КРАСНАЯ БЕЗ МАУГИ ИНИТ")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	actions
+	{
+		Global.H = Empty Array;
+		Modify Global Variable(H, Append To Array, Hero(D.Va));
+		Modify Global Variable(H, Append To Array, Hero(Кулак Смерти));
+		Modify Global Variable(H, Append To Array, Hero(Королева Стервятников));
+		Modify Global Variable(H, Append To Array, Hero(Ориса));
+		Modify Global Variable(H, Append To Array, Hero(Раматтра));
+		Modify Global Variable(H, Append To Array, Hero(Райнхардт));
+		Modify Global Variable(H, Append To Array, Hero(Турбосвин));
+		Modify Global Variable(H, Append To Array, Hero(Сигма));
+		Modify Global Variable(H, Append To Array, Hero(Уинстон));
+		Modify Global Variable(H, Append To Array, Hero(Таран));
+		Modify Global Variable(H, Append To Array, Hero(Азарт));
+		Modify Global Variable(H, Append To Array, Hero(Заря));
+		Modify Global Variable(H, Append To Array, Hero(Эш));
+		Modify Global Variable(H, Append To Array, Hero(Бастион));
+		Modify Global Variable(H, Append To Array, Hero(Кэссиди));
+		Modify Global Variable(H, Append To Array, Hero(Эхо));
+		Modify Global Variable(H, Append To Array, Hero(Гэндзи));
+		Modify Global Variable(H, Append To Array, Hero(Хандзо));
+		Modify Global Variable(H, Append To Array, Hero(Крысавчик));
+		Modify Global Variable(H, Append To Array, Hero(Мэй));
+		Modify Global Variable(H, Append To Array, Hero(Фарра));
+		Modify Global Variable(H, Append To Array, Hero(Жнец));
+		Modify Global Variable(H, Append To Array, Hero(Соджорн));
+		Modify Global Variable(H, Append To Array, Hero(Солдат-76));
+		Modify Global Variable(H, Append To Array, Hero(Сомбра));
+		Modify Global Variable(H, Append To Array, Hero(Симметра));
+		Modify Global Variable(H, Append To Array, Hero(Торбьорн));
+		Modify Global Variable(H, Append To Array, Hero(Трейсер));
+		Modify Global Variable(H, Append To Array, Hero(Роковая Вдова));
+		Modify Global Variable(H, Append To Array, Hero(Авентюра));
+		Modify Global Variable(H, Append To Array, Hero(Ана));
+		Modify Global Variable(H, Append To Array, Hero(Батист));
+		Modify Global Variable(H, Append To Array, Hero(Бригитта));
+		Modify Global Variable(H, Append To Array, Hero(Иллари));
+		Modify Global Variable(H, Append To Array, Hero(Юнона));
+		Modify Global Variable(H, Append To Array, Hero(Кирико));
+		Modify Global Variable(H, Append To Array, Hero(Ткач Жизни));
+		Modify Global Variable(H, Append To Array, Hero(Лусио));
+		Modify Global Variable(H, Append To Array, Hero(Ангел));
+		Modify Global Variable(H, Append To Array, Hero(Мойра));
+		Modify Global Variable(H, Append To Array, Hero(Дзенъятта));
+	}
+}
+
+rule("TEAM — КРАСНАЯ БЕЗ МАУГИ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		Team 2;
+		Все;
+	}
+
+	conditions
+	{
+		Has Spawned(Event Player) == True;
+	}
+
+	actions
+	{
+		Set Player Allowed Heroes(Event Player, Global.H);
+	}
+}
+
 rule("ROUND — СТАРТ ТАЙМЕРА")
 {
 	event
@@ -76,6 +170,54 @@ rule("- MAP STATS ;")
 	}
 }
 
+rule("DEBUG — КД АБИЛОК МАКС 5 СЕК")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Все;
+	}
+
+	conditions
+	{
+		Is Alive(Event Player) == True;
+	}
+
+	actions
+	{
+		If(Ability Cooldown(Event Player, Button(Ability 1)) > 5);
+			Set Ability Cooldown(Event Player, Button(Ability 1), 5);
+		End;
+		If(Ability Cooldown(Event Player, Button(Ability 2)) > 5);
+			Set Ability Cooldown(Event Player, Button(Ability 2), 5);
+		End;
+		Wait(0.250, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+rule("MAUGA — БЛОК СТРЕЛЬБЫ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Alive(Event Player) == True;
+	}
+
+	actions
+	{
+		Disallow Button(Event Player, Button(Primary Fire));
+		Disallow Button(Event Player, Button(Secondary Fire));
+	}
+}
+
 rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
 {
 	event
@@ -89,11 +231,12 @@ rule("MAUGA — СКОРОСТЬ БАЗОВАЯ")
 	{
 		Is Alive(Event Player) == True;
 		Is Using Ability 1(Event Player) == False;
+		Is Using Ultimate(Event Player) == False;
 	}
 
 	actions
 	{
-		Set Move Speed(Event Player, 90);
+		Set Move Speed(Event Player, 80);
 	}
 }
 
@@ -117,7 +260,7 @@ rule("MAUGA — СКОРОСТЬ ШИФТ")
 	}
 }
 
-rule("MAUGA — СТАРТ ЗАРЯДКИ УЛЬТЫ")
+rule("MAUGA — ШИФТ ФЛАГ СТАРТ")
 {
 	event
 	{
@@ -128,40 +271,67 @@ rule("MAUGA — СТАРТ ЗАРЯДКИ УЛЬТЫ")
 
 	conditions
 	{
-		Event Player.N == 0;
+		Is Using Ability 1(Event Player) == True;
+	}
+
+	actions
+	{
+		Event Player.Z = 1;
+	}
+}
+
+rule("MAUGA — ШИФТ ФЛАГ СБРОС")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ability 1(Event Player) == False;
+		Event Player.Z == 1;
+	}
+
+	actions
+	{
+		Wait(2, Ignore Condition);
+		Event Player.Z = 0;
+	}
+}
+
+rule("MAUGA — ШИФТ СТАН = СМЕРТЬ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		Team 2;
+		Все;
+	}
+
+	conditions
+	{
+		Has Status(Event Player, Stunned) == True;
 		Is Alive(Event Player) == True;
 	}
 
 	actions
 	{
-		Event Player.X = 0;
-		Chase Player Variable Over Time(Event Player, X, 100, 30, Destination and Duration);
-	}
-}
-
-rule("MAUGA — СИНК ЗАРЯДА УЛЬТЫ")
-{
-	event
-	{
-		Ongoing - Each Player;
-		All;
-		Мауга;
-	}
-
-	conditions
-	{
-		Event Player.N == 0;
-	}
-
-	actions
-	{
-		Set Ultimate Charge(Event Player, Event Player.X);
-		Wait(0.050, Abort When False);
+		Event Player.M = First Of(Filtered Array(All Players(Team 1),
+			Hero Of(Current Array Element) == Hero(Мауга)
+			&& Current Array Element.Z == 1
+			&& Distance Between(Position Of(Event Player), Position Of(Current Array Element)) <= 5));
+		If(Event Player.M != Null);
+			Kill(Event Player, Event Player.M);
+		End;
+		Wait(0.100, Ignore Condition);
 		Loop If Condition Is True;
 	}
 }
 
-rule("MAUGA — УЛЬТ БРОСОК")
+rule("MAUGA — МИЛИ УРОН 150")
 {
 	event
 	{
@@ -172,23 +342,159 @@ rule("MAUGA — УЛЬТ БРОСОК")
 
 	conditions
 	{
-		Is Using Ultimate(Event Player) == True;
-		Event Player.N == 0;
+		Is Button Held(Event Player, Button(Melee)) == True;
+		Is Alive(Event Player) == True;
 	}
 
 	actions
 	{
-		Event Player.N = 1;
-		Stop Chasing Player Variable(Event Player, X);
-		Set Status(Event Player, Null, Stunned, 0.016);
-		Wait(0.016, Ignore Condition);
-		Clear Status(Event Player, Stunned);
-		Set Ultimate Charge(Event Player, 100);
-		Apply Impulse(Event Player, Facing Direction Of(Event Player), 25, To World, Cancel Contrary Motion);
+		Event Player.M = First Of(Sorted Array(Filtered Array(
+			All Players(Opposite Team Of(Team Of(Event Player))),
+			Distance Between(Position Of(Event Player), Position Of(Current Array Element)) <= 3
+			&& Dot Product(Direction Towards(Eye Position(Event Player), Position Of(Current Array Element)), Facing Direction Of(Event Player)) > 0.500
+			&& Is In Line of Sight(Eye Position(Event Player), Eye Position(Current Array Element), Barriers Do Not Block LOS) == True),
+			Distance Between(Position Of(Event Player), Position Of(Current Array Element))));
+		If(Event Player.M != Null);
+			Damage(Event Player.M, Event Player, 150);
+		End;
+		Wait(0.700, Ignore Condition);
+		Loop If Condition Is True;
 	}
 }
 
-rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
+rule("MAUGA — УЛЬТА ЗАРЯДКА 5 СЕК")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Alive(Event Player) == True;
+		Has Spawned(Event Player) == True;
+		Ultimate Charge Percent(Event Player) < 100;
+		Is Using Ultimate(Event Player) == False;
+	}
+
+	actions
+	{
+		Set Ultimate Charge(Event Player, Min(Ultimate Charge Percent(Event Player) + 1, 100));
+		Wait(0.050, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+rule("MAUGA — РАЗРЕШИТЬ E")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 0;
+		Has Spawned(Event Player) == True;
+	}
+
+	actions
+	{
+		Allow Button(Event Player, Button(Ability 2));
+	}
+}
+
+rule("MAUGA — БЛОК E ВО ВРЕМЯ ФАЗ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N != 0;
+	}
+
+	actions
+	{
+		Disallow Button(Event Player, Button(Ability 2));
+	}
+}
+
+rule("MAUGA — РАЗРЕШИТЬ УЛЬТУ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 0;
+		Has Spawned(Event Player) == True;
+	}
+
+	actions
+	{
+		Allow Button(Event Player, Button(Ultimate));
+	}
+}
+
+rule("MAUGA — БЛОК УЛЬТЫ ВО ВРЕМЯ E")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 1 || Event Player.N == 2;
+	}
+
+	actions
+	{
+		Disallow Button(Event Player, Button(Ultimate));
+	}
+}
+
+rule("MAUGA — E БРОСОК")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ability 2(Event Player) == True;
+		Event Player.N == 0;
+		Is Alive(Event Player) == True;
+		Is Using Ability 1(Event Player) == False;
+	}
+
+	actions
+	{
+		Apply Impulse(Event Player, Facing Direction Of(Event Player), 25, To World, Cancel Contrary Motion);
+		Wait(0.200, Ignore Condition);
+		Event Player.N = 1;
+	}
+}
+
+rule("MAUGA — E ПРИЗЕМЛЕНИЕ — КУПОЛ")
 {
 	event
 	{
@@ -205,9 +511,248 @@ rule("MAUGA — УЛЬТ ПРИЗЕМЛЕНИЕ")
 
 	actions
 	{
-		Press Button(Event Player, Button(Ultimate));
+		Event Player.N = 2;
+		Disallow Button(Event Player, Button(Ability 1));
+		Event Player.L = Filtered Array(All Players(Opposite Team Of(Team Of(Event Player))),
+			Distance Between(Position Of(Event Player), Position Of(Current Array Element)) <= 10);
+		Event Player.T = 8;
+		Chase Player Variable Over Time(Event Player, T, 0, 8, Destination and Duration);
+		Create Effect(All Players(All Teams), Ring, Custom Color(255, 200, 0, 220), Event Player, 10, Visible To Position and Radius);
+		Event Player.E = Last Created Entity;
+	}
+}
+
+rule("MAUGA — КУПОЛ ЛОВУШКА")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 2;
+	}
+
+	actions
+	{
+		For Player Variable(Event Player, I, 0, Count Of(All Players(Opposite Team Of(Team Of(Event Player)))), 1);
+			If(Distance Between(Position Of(Event Player), Position Of(All Players(Opposite Team Of(Team Of(Event Player)))[Event Player.I])) <= 10);
+				If(Array Contains(Event Player.L, All Players(Opposite Team Of(Team Of(Event Player)))[Event Player.I]) == False);
+					Modify Player Variable(Event Player, L, Append To Array, All Players(Opposite Team Of(Team Of(Event Player)))[Event Player.I]);
+				End;
+			End;
+		End;
+		For Player Variable(Event Player, I, 0, Count Of(Event Player.L), 1);
+			If(Distance Between(Position Of(Event Player), Position Of(Event Player.L[Event Player.I])) > 10);
+				Teleport(Event Player.L[Event Player.I], Nearest Walkable Position(Position Of(Event Player) + Direction Towards(Event Player, Event Player.L[Event Player.I]) * 8));
+				If(Distance Between(Position Of(Event Player), Position Of(Event Player.L[Event Player.I])) > 9);
+					Kill(Event Player.L[Event Player.I], Event Player);
+				End;
+			End;
+			If(Distance Between(Position Of(Event Player), Position Of(Event Player.L[Event Player.I])) > 8);
+				Apply Impulse(Event Player.L[Event Player.I], Direction Towards(Event Player.L[Event Player.I], Event Player), 10, To World, Cancel Contrary Motion);
+			End;
+		End;
+		Wait(0.016, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+rule("MAUGA — КУПОЛ ЗАВЕРШЕН")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 2;
+		Event Player.T <= 0;
+	}
+
+	actions
+	{
+		Stop Chasing Player Variable(Event Player, T);
+		Event Player.L = Empty Array;
+		Destroy Effect(Event Player.E);
+		Allow Button(Event Player, Button(Ability 1));
+		Event Player.N = 0;
+		Set Status(Event Player, Null, Stunned, 1.500);
+		Set Ability Cooldown(Event Player, Button(Ability 2), 5);
+	}
+}
+
+rule("MAUGA — УЛЬТА СТАРТ СФЕРА")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ultimate(Event Player) == True;
+	}
+
+	actions
+	{
+		Event Player.N = 4;
+		Event Player.C = 0;
+		Event Player.G = 0;
+		Set Move Speed(Event Player, 160);
+		Set Gravity(Event Player, 25);
+		Create Effect(All Players(All Teams), Sphere, Custom Color(0, 0, 0, 0), Vector(500, 500, 500), 0.001, Visible To Position and Radius);
+		Event Player.F = Last Created Entity;
+		Wait(0.500, Ignore Condition);
+		If(Event Player.N == 4);
+			Destroy Effect(Event Player.F);
+			Event Player.S = Nearest Walkable Position(Position Of(Event Player) + Direction From Angles(Horizontal Angle From Direction(Facing Direction Of(Event Player)), 0) * 1);
+			Create Effect(All Players(All Teams), Sphere, Custom Color(255, 255, 255, 255), Event Player.S, 0.500, Visible To Position and Radius);
+			Event Player.F = Last Created Entity;
+			Event Player.G = 1;
+		End;
+	}
+}
+
+rule("MAUGA — УЛЬТА СФЕРА ЦВЕТ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 4;
+		Event Player.G == 1;
+	}
+
+	actions
+	{
+		Destroy Effect(Event Player.F);
+		Create Effect(All Players(All Teams), Sphere, Custom Color(255, Max(255 - Event Player.C * 5.100, 0), Max(255 - Event Player.C * 5.100, 0), 200), Event Player.S, 0.500, Visible To Position and Radius);
+		Event Player.F = Last Created Entity;
 		Wait(0.250, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+rule("MAUGA — УЛЬТА ПОПАДАНИЕ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 4;
+		Event Player.C < 50;
+		Event Player.G == 1;
+	}
+
+	actions
+	{
+		If(Is Button Held(Event Player, Button(Primary Fire)) == True || Is Button Held(Event Player, Button(Secondary Fire)) == True);
+			Event Player.Y = Dot Product(Event Player.S - Eye Position(Event Player), Facing Direction Of(Event Player));
+			If(Event Player.Y > 0 && Distance Between(Eye Position(Event Player) + Facing Direction Of(Event Player) * Event Player.Y, Event Player.S) <= 0.500);
+				Event Player.C = Min(Event Player.C + 1, 50);
+			End;
+		End;
+		Wait(0.033, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+rule("MAUGA — УЛЬТА 50 ПОПАДАНИЙ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Event Player.N == 4;
+		Event Player.C >= 50;
+	}
+
+	actions
+	{
+		For Global Variable(I, 0, Count Of(All Players(Opposite Team Of(Team Of(Event Player)))), 1);
+			If(Distance Between(Event Player.S, Position Of(All Players(Opposite Team Of(Team Of(Event Player)))[Global.I])) <= 8);
+				Damage(All Players(Opposite Team Of(Team Of(Event Player)))[Global.I], Event Player, 500);
+			End;
+		End;
+		Destroy Effect(Event Player.F);
+		Event Player.C = 51;
+	}
+}
+
+rule("MAUGA — УЛЬТА КОНЕЦ")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		Мауга;
+	}
+
+	conditions
+	{
+		Is Using Ultimate(Event Player) == False;
+		Event Player.N == 4;
+	}
+
+	actions
+	{
+		Destroy Effect(Event Player.F);
+		Set Move Speed(Event Player, 80);
+		Set Gravity(Event Player, 100);
+		Event Player.N = 0;
+		Event Player.G = 0;
+	}
+}
+
+rule("MAUGA — СБРОС ПРИ СМЕРТИ")
+{
+	event
+	{
+		Player Died;
+		All;
+		Мауга;
+	}
+
+	actions
+	{
+		If(Event Player.N == 2);
+			Stop Chasing Player Variable(Event Player, T);
+			Event Player.L = Empty Array;
+			Destroy Effect(Event Player.E);
+		End;
+		If(Event Player.N == 4);
+			Destroy Effect(Event Player.F);
+			Set Gravity(Event Player, 100);
+		End;
+		Allow Button(Event Player, Button(Ability 1));
+		Allow Button(Event Player, Button(Ability 2));
+		Allow Button(Event Player, Button(Ultimate));
 		Event Player.N = 0;
 		Event Player.X = 0;
+		Event Player.G = 0;
 	}
 }
